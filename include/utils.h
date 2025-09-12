@@ -13,7 +13,6 @@ namespace Utils {
     // File system utilities
     std::string getCurrentDirectory();
     bool changeDirectory(const std::string& path);
-    bool directoryExists(const std::string& path);
     
     // Environment utilities
     std::string getEnvVar(const std::string& name);

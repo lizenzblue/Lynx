@@ -3,7 +3,6 @@
 #include <sstream>
 #include <unistd.h>
 #include <cstdlib>
-#include <sys/stat.h>
 #include <pwd.h>
 #include <limits.h>
 #include <iostream>
@@ -53,14 +52,6 @@ std::string Utils::getCurrentDirectory() {
 
 bool Utils::changeDirectory(const std::string& path) {
     return chdir(path.c_str()) == 0;
-}
-
-bool Utils::directoryExists(const std::string& path) {
-    struct stat info;
-    if (stat(path.c_str(), &info) != 0) {
-        return false;
-    }
-    return (info.st_mode & S_IFDIR) != 0;
 }
 
 std::string Utils::getEnvVar(const std::string& name) {

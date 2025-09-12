@@ -1,0 +1,20 @@
+# Lynx Shell Dark Theme
+# Modern dark theme with bright colors
+
+# Prompt colors
+prompt_user_color="bright_green"
+prompt_host_color="bright_blue"
+prompt_cwd_color="bright_cyan"
+prompt_symbol_color="bright_white"
+prompt_error_color="bright_red"
+
+# Two-line prompt format
+prompt_format="┌─[{user}@{host}]─[{cwd}]\n└─$ "
+
+# Command output colors
+command_color="bright_white"
+output_color="bright_white"
+error_color="bright_red"
+success_color="bright_green"
+warning_color="bright_yellow"
+info_color="bright_blue"

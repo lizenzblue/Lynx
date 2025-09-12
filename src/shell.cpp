@@ -1,16 +1,21 @@
 #include "shell.h"
 #include "command.h"
 #include "utils.h"
+#include "config.h"
 #include <iostream>
 #include <unistd.h>
 
-Shell::Shell() : running(true) {
+Shell::Shell() : running(true), lastExitCode(0) {
     currentDirectory = Utils::getCurrentDirectory();
     
-    // Initialize some basic environment variables
-    setEnvironmentVariable("SHELL", "lynx");
-    setEnvironmentVariable("USER", Utils::getUsername());
-    setEnvironmentVariable("PWD", currentDirectory);
+    // Initialize configuration system
+    configManager = std::make_unique<ConfigManager>();
+    
+    // Display welcome message if configured
+    std::string welcomeMsg = configManager->getSetting("welcome_message");
+    if (!welcomeMsg.empty() && configManager->getBoolSetting("show_welcome", true)) {
+        std::cout << configManager->getThemeManager()->colorize(welcomeMsg, "info") << std::endl;
+    }
 }
 
 Shell::~Shell() {
@@ -34,8 +39,11 @@ void Shell::displayPrompt() {
     std::string hostname = Utils::getHostname();
     std::string cwd = Utils::getCurrentDirectory();
     
-    // Simple prompt format: user@hostname:current_dir$
-    std::cout << username << "@" << hostname << ":" << cwd << "$ ";
+    // Use themed prompt
+    std::string prompt = configManager->getThemeManager()->formatPrompt(
+        username, hostname, cwd, lastExitCode);
+    
+    std::cout << prompt;
 }
 
 std::string Shell::readInput() {
@@ -54,12 +62,19 @@ std::string Shell::readInput() {
 void Shell::executeCommand(const std::string& input) {
     if (input.empty()) return;
     
-    Command cmd = CommandParser::parseCommand(input);
+    // Expand aliases first
+    std::string expandedInput = configManager->getAliasManager()->expandAlias(input);
+    
+    Command cmd = CommandParser::parseCommand(expandedInput);
+    
+    lastExitCode = 0;  // Reset exit code
     
     if (CommandExecutor::isBuiltinCommand(cmd.name)) {
-        CommandExecutor::executeBuiltinCommand(cmd);
+        if (!CommandExecutor::executeBuiltinCommand(cmd, this)) {
+            lastExitCode = 1;
+        }
     } else {
-        CommandExecutor::executeExternalCommand(cmd);
+        lastExitCode = CommandExecutor::executeExternalCommand(cmd);
     }
 }
 
@@ -70,25 +85,6 @@ void Shell::addToHistory(const std::string& command) {
 void Shell::printHistory() {
     for (size_t i = 0; i < history.size(); ++i) {
         std::cout << i + 1 << ": " << history[i] << std::endl;
-    }
-}
-
-void Shell::setEnvironmentVariable(const std::string& key, const std::string& value) {
-    environment[key] = value;
-    Utils::setEnvVar(key, value);
-}
-
-std::string Shell::getEnvironmentVariable(const std::string& key) {
-    auto it = environment.find(key);
-    if (it != environment.end()) {
-        return it->second;
-    }
-    return Utils::getEnvVar(key);
-}
-
-void Shell::printEnvironment() {
-    for (const auto& pair : environment) {
-        std::cout << pair.first << "=" << pair.second << std::endl;
     }
 }
 
