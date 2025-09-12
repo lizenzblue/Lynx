@@ -4,93 +4,42 @@
 
 ```
 Lynx/
-├── .github/
-│   └── workflows/
-│       └── build.yml         # CI/CD pipeline configuration
-├── CMakeLists.txt            # CMake build configuration
-├── Makefile                  # GNU Make build system
-├── README.md                 # Main project documentation
-├── DEVELOPMENT.md            # This file - development guide
-├── CUSTOMIZATION.md          # User customization guide
-├── LICENSE                   # MIT license file
-├── .gitignore               # Git ignore rules
-├── install.sh               # Installation script
-├── uninstall.sh             # Uninstallation script
-├── release.sh               # Release packaging script
-├── include/                 # C++ header files
-│   ├── shell.h              # Main shell class
-│   ├── command.h            # Command parsing and execution
-│   ├── config.h             # Configuration management system
-│   ├── theme.h              # Theme management
-│   ├── alias.h              # Alias management
-│   ├── version.h            # Version management
-│   └── utils.h              # Utility functions
-├── src/                     # C++ source files
-│   ├── main.cpp             # Application entry point
-│   ├── shell.cpp            # Shell implementation
-│   ├── command.cpp          # Command handling and execution
-│   ├── config.cpp           # Configuration system
-│   ├── theme.cpp            # Theme management
-│   ├── alias.cpp            # Alias management
-│   ├── version.cpp          # Version information
-│   └── utils.cpp            # Utility implementations
-├── themes/                  # Default theme definitions
-│   ├── default.ini          # Default theme
-│   ├── dark.ini             # Dark theme
-│   ├── blue.ini             # Blue theme
-│   ├── green.ini            # Green theme
-│   ├── purple.ini           # Purple theme
-│   └── rainbow.ini          # Rainbow theme
-├── build/                   # Build output (created automatically)
-│   ├── obj/                 # Object files
-│   └── lynx                 # Final executable
-└── release/                 # Release packages (created by release.sh)
-    ├── lynx-1.0.0-macos-arm64.tar.gz
-    ├── lynx-1.0.0-macos-arm64.zip
-    ├── lynx-1.0.0-src.tar.gz
-    └── lynx-1.0.0-src.zip
+├── CMakeLists.txt          # CMake build configuration
+├── Makefile               # Alternative GNU Make build
+├── README.md              # Project documentation
+├── demo.sh               # Demo script
+├── .gitignore            # Git ignore rules
+├── include/              # Header files
+│   ├── shell.h           # Main shell class
+│   ├── command.h         # Command parsing and execution
+│   └── utils.h           # Utility functions
+├── src/                  # Source files
+│   ├── main.cpp          # Entry point
+│   ├── shell.cpp         # Shell implementation
+│   ├── command.cpp       # Command handling
+│   └── utils.cpp         # Utility implementations
+└── build/                # Build output (created automatically)
+    ├── obj/              # Object files
+    └── lynx              # Final executable
 ```
 
-## Development Workflow
+## Building
 
-### Building for Development
+### Using Make (Recommended)
 
 ```bash
-# Debug build with symbols
-make debug
-
-# Production build optimized
-make
-
-# Clean build artifacts
-make clean
-```
-
-### Using CMake Alternative
-
-```bash
-mkdir build && cd build
-cmake ..
-make
-```
-
 # Debug build (with debugging symbols)
-
 make debug
 
 # Release build (optimized)
-
 make release
 
 # Clean build files
-
 make clean
 
 # Build and run
-
 make run
-
-````
+```
 
 ### Using CMake
 
@@ -99,7 +48,7 @@ mkdir build
 cd build
 cmake ..
 make
-````
+```
 
 ## Architecture
 

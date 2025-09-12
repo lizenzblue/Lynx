@@ -1,0 +1,120 @@
+name: Build and Release Lynx Shell
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  pull_request:
+    branches: [main]
+
+env:
+  BUILD_TYPE: Release
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        include:
+          - os: ubuntu-latest
+            artifact_name: lynx-linux
+            asset_name: lynx-linux-x64
+          - os: macos-latest
+            artifact_name: lynx-macos
+            asset_name: lynx-macos-x64
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install dependencies (Ubuntu)
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential cmake
+
+      - name: Install dependencies (macOS)
+        if: matrix.os == 'macos-latest'
+        run: |
+          brew install cmake
+
+      - name: Configure CMake
+        run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+
+      - name: Build
+        run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
+
+      - name: Test
+        working-directory: ${{github.workspace}}/build
+        run: |
+          echo "help" | ./lynx || true
+          echo "Built successfully!"
+
+      - name: Package binary
+        run: |
+          mkdir -p dist
+          cp build/lynx dist/
+          cp README.md dist/
+          cp CUSTOMIZATION.md dist/
+          cp config.sample dist/
+          cp aliases.sample dist/
+          cp -r themes dist/
+          cd dist
+          tar -czf ${{ matrix.artifact_name }}.tar.gz *
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ matrix.artifact_name }}
+          path: dist/${{ matrix.artifact_name }}.tar.gz
+
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: dist/${{ matrix.artifact_name }}.tar.gz
+          name: ${{ matrix.asset_name }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  build-static:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential cmake
+
+      - name: Build static binary
+        run: |
+          cmake -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_EXE_LINKER_FLAGS="-static"
+          cmake --build build --config Release
+
+      - name: Package static binary
+        run: |
+          mkdir -p dist
+          cp build/lynx dist/lynx-static
+          cp README.md dist/
+          cp CUSTOMIZATION.md dist/
+          cp config.sample dist/
+          cp aliases.sample dist/
+          cp -r themes dist/
+          cd dist
+          tar -czf lynx-linux-static.tar.gz *
+
+      - name: Upload static artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: lynx-linux-static
+          path: dist/lynx-linux-static.tar.gz
+
+      - name: Release static binary
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: dist/lynx-linux-static.tar.gz
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

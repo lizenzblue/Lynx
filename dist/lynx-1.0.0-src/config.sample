@@ -1,0 +1,31 @@
+# Lynx Shell Sample Configuration
+# Copy this file to ~/.lynx/config to customize your shell
+
+# Theme selection
+theme=default
+
+# Prompt format (available variables: {user}, {host}, {cwd})
+prompt_format={user}@{host}:{cwd}$ 
+
+# History settings
+history_size=1000
+
+# Behavior settings
+auto_cd=true
+case_sensitive=false
+tab_completion=true
+color_output=true
+exit_on_eof=true
+show_welcome=true
+
+# Welcome message
+welcome_message=Welcome to Lynx Shell! Type 'help' for commands.
+
+# Command timeout (in seconds)
+command_timeout=30
+
+# Other options you can configure:
+# prompt_format=┌─[{user}@{host}]─[{cwd}]\n└─$ 
+# theme=dark
+# theme=minimal
+# theme=rainbow

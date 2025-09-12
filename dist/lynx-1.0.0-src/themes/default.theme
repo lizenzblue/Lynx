@@ -1,0 +1,20 @@
+# Lynx Shell Default Theme
+# Colors and formatting configuration
+
+# Prompt colors
+prompt_user_color="green"
+prompt_host_color="blue"
+prompt_cwd_color="cyan"
+prompt_symbol_color="white"
+prompt_error_color="red"
+
+# Prompt format
+prompt_format="{user}@{host}:{cwd}$ "
+
+# Command output colors
+command_color="white"
+output_color="white"
+error_color="red"
+success_color="green"
+warning_color="yellow"
+info_color="blue"

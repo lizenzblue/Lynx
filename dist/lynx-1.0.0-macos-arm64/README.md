@@ -5,14 +5,12 @@ A modern, **highly customizable** shell implementation built from scratch in C++
 ## 🚀 Features
 
 ### Core Functionality
-
 - **Full shell implementation** with built-in and external command execution
 - **Comprehensive customization system** with themes, aliases, and runtime settings
 - **Modern C++17** codebase with smart pointers and STL containers
 - **Cross-platform** support (Linux and macOS)
 
 ### User Experience
-
 - **Multiple built-in themes** (default, dark, blue, green, purple, rainbow)
 - **Runtime configuration** - change settings without restarting
 - **Command aliases** with automatic expansion and persistence
@@ -21,7 +19,6 @@ A modern, **highly customizable** shell implementation built from scratch in C++
 - **Environment variable** support and display
 
 ### Production Ready
-
 - **CI/CD pipeline** with automated builds and releases
 - **Package management** with tar.gz, zip, DEB, and RPM generation
 - **One-command installation** with automatic shell integration
@@ -31,13 +28,11 @@ A modern, **highly customizable** shell implementation built from scratch in C++
 ## ⚡ Quick Installation
 
 ### One-Line Install (Recommended)
-
 ```bash
 curl -sSL https://raw.githubusercontent.com/your-username/lynx/main/install.sh | bash
 ```
 
 ### Manual Download
-
 ```bash
 # Download latest release
 wget https://github.com/your-username/lynx/releases/latest/download/lynx-linux.tar.gz
@@ -47,7 +42,6 @@ sudo ./install.sh
 ```
 
 ### Build from Source
-
 ```bash
 git clone https://github.com/your-username/lynx.git
 cd lynx
@@ -73,30 +67,28 @@ clear                            # Clear screen
 
 ## 📦 Available Commands
 
-| Command   | Description                   | Usage                    |
-| --------- | ----------------------------- | ------------------------ |
-| `cd`      | Change directory              | `cd <directory>`         |
-| `pwd`     | Print working directory       | `pwd`                    |
-| `help`    | Show help message             | `help`                   |
-| `history` | Show command history          | `history`                |
-| `env`     | Display environment variables | `env`                    |
-| `clear`   | Clear the screen              | `clear`                  |
-| `exit`    | Exit the shell                | `exit`                   |
-| `set`     | Set configuration option      | `set <key> <value>`      |
-| `alias`   | Manage command aliases        | `alias [name] [command]` |
-| `theme`   | Change color theme            | `theme [set <name>]`     |
-| `version` | Show version information      | `version`                |
+| Command | Description | Usage |
+|---------|-------------|-------|
+| `cd` | Change directory | `cd <directory>` |
+| `pwd` | Print working directory | `pwd` |
+| `help` | Show help message | `help` |
+| `history` | Show command history | `history` |
+| `env` | Display environment variables | `env` |
+| `clear` | Clear the screen | `clear` |
+| `exit` | Exit the shell | `exit` |
+| `set` | Set configuration option | `set <key> <value>` |
+| `alias` | Manage command aliases | `alias [name] [command]` |
+| `theme` | Change color theme | `theme [set <name>]` |
+| `version` | Show version information | `version` |
 
 ## 🎨 Customization & Configuration
 
 Lynx stores configuration in `~/.lynx/`:
-
 - `config.ini` - Main configuration file
-- `aliases.ini` - Command aliases
+- `aliases.ini` - Command aliases  
 - `themes/` - Custom theme definitions
 
 ### Available Themes
-
 - **default** - Clean and minimal
 - **dark** - Dark theme with bright accents
 - **blue** - Blue-based color scheme
@@ -105,7 +97,6 @@ Lynx stores configuration in `~/.lynx/`:
 - **rainbow** - Colorful multi-hue theme
 
 ### Configuration Examples
-
 ```bash
 # Switch themes
 theme set dark
@@ -122,9 +113,7 @@ set welcome_message "Welcome to your custom shell!"
 ```
 
 ### Custom Theme Creation
-
 Create `~/.lynx/themes/mytheme.ini`:
-
 ```ini
 [colors]
 primary = \033[1;36m
@@ -139,13 +128,11 @@ text = \033[0m
 ## 🔧 Development & Building
 
 ### Prerequisites
-
 - C++17 compatible compiler (GCC 7+, Clang 5+)
 - Make or CMake
 - Git
 
 ### Build Options
-
 ```bash
 # Production build
 make
@@ -164,14 +151,12 @@ sudo make install
 ## 🚀 Production Pipeline
 
 ### For Users
-
 - **Automated releases** via GitHub Actions
 - **Multi-platform packages** (Linux, macOS)
 - **Checksums** for verification
 - **One-command installation**
 
 ### For Maintainers
-
 ```bash
 # Generate release packages
 ./release.sh
@@ -181,9 +166,8 @@ make package
 ```
 
 ## 📦 Package Formats
-
 - **tar.gz** - Universal archive format
-- **zip** - Alternative archive format
+- **zip** - Alternative archive format  
 - **DEB** - Debian/Ubuntu packages
 - **RPM** - RedHat/CentOS packages
 
@@ -207,7 +191,6 @@ rm -rf ~/.lynx  # Optional: removes configuration
 5. Open a Pull Request
 
 ### Development Setup
-
 ```bash
 git clone https://github.com/your-username/lynx.git
 cd lynx
@@ -217,11 +200,11 @@ make debug
 
 ## 📊 Platform Support
 
-| Platform | Status           | Notes                                |
-| -------- | ---------------- | ------------------------------------ |
-| Linux    | ✅ Supported     | Ubuntu 20.04+, CentOS 8+, Arch Linux |
-| macOS    | ✅ Supported     | macOS 11+                            |
-| Windows  | ❌ Not supported | Contributions welcome                |
+| Platform | Status | Notes |
+|----------|--------|-------|
+| Linux | ✅ Supported | Ubuntu 20.04+, CentOS 8+, Arch Linux |
+| macOS | ✅ Supported | macOS 11+ |
+| Windows | ❌ Not supported | Contributions welcome |
 
 ## 📄 License
 
@@ -236,7 +219,6 @@ MIT License - see [LICENSE](LICENSE) file for details.
 ## 📈 Changelog
 
 ### v1.0.0 (Latest)
-
 - ✅ Complete shell implementation with all core commands
 - ✅ Advanced theming and customization system
 - ✅ Alias management with persistence
@@ -249,7 +231,7 @@ MIT License - see [LICENSE](LICENSE) file for details.
 
 ---
 
-**Lynx Shell** - _Where customization meets performance_ 🚀
+**Lynx Shell** - *Where customization meets performance* 🚀
 
 - `cd <directory>` - Change directory
 - `pwd` - Print working directory
