@@ -34,9 +34,6 @@ private:
     static bool executeHelp();
     static bool executeHistory(Shell* shell);
     static bool executeEnv();
-    static bool executeSet(const std::vector<std::string>& args, Shell* shell);
-    static bool executeAlias(const std::vector<std::string>& args, Shell* shell);
-    static bool executeTheme(const std::vector<std::string>& args, Shell* shell);
     static bool executeVersion();
 };
 

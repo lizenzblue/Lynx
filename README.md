@@ -14,7 +14,7 @@ A modern, **highly customizable** shell implementation built from scratch in C++
 ### User Experience
 
 - **Multiple built-in themes** (default, dark, blue, green, purple, rainbow)
-- **Runtime configuration** - change settings without restarting
+- **File-based configuration** - edit config files like zsh/bash dotfiles
 - **Command aliases** with automatic expansion and persistence
 - **Colored prompts** with customizable formats and user/host/path variables
 - **Command history** with configurable size and persistence
@@ -33,14 +33,14 @@ A modern, **highly customizable** shell implementation built from scratch in C++
 ### One-Line Install (Recommended)
 
 ```bash
-curl -sSL https://raw.githubusercontent.com/your-username/lynx/main/install.sh | bash
+curl -sSL https://raw.githubusercontent.com/lizenzblue/lynx/main/install.sh | bash
 ```
 
 ### Manual Download
 
 ```bash
 # Download latest release
-wget https://github.com/your-username/lynx/releases/latest/download/lynx-linux.tar.gz
+wget https://github.com/lizenzblue/lynx/releases/latest/download/lynx-linux.tar.gz
 tar -xzf lynx-linux.tar.gz
 cd lynx-*
 sudo ./install.sh
@@ -49,7 +49,7 @@ sudo ./install.sh
 ### Build from Source
 
 ```bash
-git clone https://github.com/your-username/lynx.git
+git clone https://github.com/lizenzblue/lynx.git
 cd lynx
 make
 sudo make install
@@ -64,36 +64,35 @@ lynx
 # Try some commands
 help                               # See all available commands
 version                           # Show version information
-theme set dark                    # Switch to dark theme
-alias ll ls -la --color=auto      # Create an alias
-set prompt_format "%u@%h:%w$ "    # Customize prompt
 history                           # View command history
 clear                            # Clear screen
+pwd                              # Show current directory
 ```
+
+**Configuration**: Lynx loads settings automatically from `~/.lynx/` files at startup, just like zsh with its dotfiles.
 
 ## 📦 Available Commands
 
-| Command   | Description                   | Usage                    |
-| --------- | ----------------------------- | ------------------------ |
-| `cd`      | Change directory              | `cd <directory>`         |
-| `pwd`     | Print working directory       | `pwd`                    |
-| `help`    | Show help message             | `help`                   |
-| `history` | Show command history          | `history`                |
-| `env`     | Display environment variables | `env`                    |
-| `clear`   | Clear the screen              | `clear`                  |
-| `exit`    | Exit the shell                | `exit`                   |
-| `set`     | Set configuration option      | `set <key> <value>`      |
-| `alias`   | Manage command aliases        | `alias [name] [command]` |
-| `theme`   | Change color theme            | `theme [set <name>]`     |
-| `version` | Show version information      | `version`                |
+| Command   | Description                   | Usage            |
+| --------- | ----------------------------- | ---------------- |
+| `cd`      | Change directory              | `cd <directory>` |
+| `pwd`     | Print working directory       | `pwd`            |
+| `help`    | Show help message             | `help`           |
+| `history` | Show command history          | `history`        |
+| `env`     | Display environment variables | `env`            |
+| `clear`   | Clear the screen              | `clear`          |
+| `exit`    | Exit the shell                | `exit`           |
+| `version` | Show version information      | `version`        |
 
-## 🎨 Customization & Configuration
+## 🎨 File-Based Configuration
 
-Lynx stores configuration in `~/.lynx/`:
+Lynx loads configuration automatically from `~/.lynx/` at startup (similar to how zsh loads `.zshrc`):
 
 - `config.ini` - Main configuration file
 - `aliases.ini` - Command aliases
 - `themes/` - Custom theme definitions
+
+**No interactive configuration needed** - just edit the files and restart the shell!
 
 ### Available Themes
 
@@ -106,20 +105,27 @@ Lynx stores configuration in `~/.lynx/`:
 
 ### Configuration Examples
 
-```bash
-# Switch themes
-theme set dark
+Edit `~/.lynx/config.ini`:
 
-# Create useful aliases
-alias ll ls -la --color=auto
-alias gs git status
-alias .. cd ..
-
-# Customize prompt and behavior
-set prompt_format "%u@%h:%w$ "
-set history_size 2000
-set welcome_message "Welcome to your custom shell!"
+```ini
+[general]
+theme = dark
+prompt_format = %u@%h:%w$
+history_size = 2000
+welcome_message = Welcome to your custom shell!
 ```
+
+Edit `~/.lynx/aliases.ini`:
+
+```ini
+[aliases]
+ll = ls -la --color=auto
+gs = git status
+.. = cd ..
+... = cd ../..
+```
+
+**That's it!** Restart the shell and your settings are active.
 
 ### Custom Theme Creation
 
@@ -209,7 +215,7 @@ rm -rf ~/.lynx  # Optional: removes configuration
 ### Development Setup
 
 ```bash
-git clone https://github.com/your-username/lynx.git
+git clone https://github.com/lizenzblue/lynx.git
 cd lynx
 make debug
 ./build/lynx
@@ -229,9 +235,9 @@ MIT License - see [LICENSE](LICENSE) file for details.
 
 ## 💬 Support & Community
 
-- **Issues**: [GitHub Issues](https://github.com/your-username/lynx/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/your-username/lynx/discussions)
-- **Documentation**: [Project Wiki](https://github.com/your-username/lynx/wiki)
+- **Issues**: [GitHub Issues](https://github.com/lizenzblue/lynx/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/lizenzblue/lynx/discussions)
+- **Documentation**: [Project Wiki](https://github.com/lizenzblue/lynx/wiki)
 
 ## 📈 Changelog
 
