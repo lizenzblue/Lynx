@@ -110,6 +110,7 @@ jobs:
         with:
           name: lynx-linux-static
           path: dist/lynx-linux-static.tar.gz
+          retention-days: 30
 
       - name: Release static binary
         uses: softprops/action-gh-release@v1
