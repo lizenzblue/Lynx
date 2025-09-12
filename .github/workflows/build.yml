@@ -1,5 +1,6 @@
 name: Build and Release Lynx Shell
 
+# Updated to use upload-artifact@v4 (latest version)
 on:
   push:
     branches: [main]
