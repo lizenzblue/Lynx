@@ -16,9 +16,14 @@ include_directories(include)
 find_package(PkgConfig REQUIRED)
 
 # Source files (exclude plugin.cpp for now due to dependencies)
+
+
+# Gather sources, but exclude nothing now
 file(GLOB_RECURSE SOURCES "src/*.cpp")
-list(REMOVE_ITEM SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/src/plugin.cpp")
-list(REMOVE_ITEM SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/src/theme_manager.cpp")
+
+# Add plugin.cpp and theme_manager.cpp explicitly (if not already included)
+list(APPEND SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/src/plugin.cpp")
+list(APPEND SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/src/theme_manager.cpp")
 
 # Create executable
 add_executable(lynx ${SOURCES})
