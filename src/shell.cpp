@@ -2,6 +2,8 @@
 #include "command.h"
 #include "utils.h"
 #include "config.h"
+#include "plugin.h"
+#include "theme_manager.h"
 #include <iostream>
 #include <unistd.h>
 
@@ -11,18 +13,43 @@ Shell::Shell() : running(true), lastExitCode(0) {
     // Initialize configuration system
     configManager = std::make_unique<ConfigManager>();
     
+    // Initialize theme system
+    themeManager = std::make_unique<ExternalThemeManager>();
+    themeManager->discoverThemes();
+    
+    // Load theme from config
+    std::string themeName = configManager->getSetting("theme", "default");
+    themeManager->setTheme(themeName);
+    
+    // Initialize plugin system
+    pluginManager = std::make_unique<PluginManager>(this);
+    pluginManager->loadAllPlugins();
+    
     // Display welcome message if configured
-    std::string welcomeMsg = configManager->getSetting("welcome_message");
-    if (!welcomeMsg.empty() && configManager->getBoolSetting("show_welcome", true)) {
-        std::cout << configManager->getThemeManager()->colorize(welcomeMsg, "info") << std::endl;
+    std::string welcomeMsg = configManager->getSetting("welcome_message", "Welcome to Lynx Shell!");
+    if (configManager->getSetting("show_welcome", "true") == "true") {
+        const ThemeConfig* theme = themeManager->getCurrentTheme();
+        if (theme) {
+            std::cout << themeManager->applyColor(welcomeMsg, theme->colors.outputInfo) << std::endl;
+        } else {
+            std::cout << welcomeMsg << std::endl;
+        }
     }
 }
 
 Shell::~Shell() {
-    // Cleanup if needed
+    // Unload plugins before destruction
+    if (pluginManager) {
+        pluginManager->unloadAllPlugins();
+    }
 }
 
 void Shell::run() {
+    // Broadcast shell startup event to plugins
+    if (pluginManager) {
+        pluginManager->broadcastEvent(PluginEvent::SHELL_STARTUP);
+    }
+    
     while (running) {
         displayPrompt();
         std::string input = readInput();
@@ -32,16 +59,31 @@ void Shell::run() {
             executeCommand(input);
         }
     }
+    
+    // Broadcast shell shutdown event to plugins
+    if (pluginManager) {
+        pluginManager->broadcastEvent(PluginEvent::SHELL_SHUTDOWN);
+    }
 }
 
 void Shell::displayPrompt() {
-    std::string username = Utils::getUsername();
-    std::string hostname = Utils::getHostname();
+    // Broadcast prompt display event to plugins
+    if (pluginManager) {
+        std::map<std::string, std::string> context;
+        context["directory"] = Utils::getCurrentDirectory();
+        context["exit_code"] = std::to_string(lastExitCode);
+        pluginManager->broadcastEvent(PluginEvent::PROMPT_DISPLAY, context);
+    }
+    
     std::string cwd = Utils::getCurrentDirectory();
     
     // Use themed prompt
-    std::string prompt = configManager->getThemeManager()->formatPrompt(
-        username, hostname, cwd, lastExitCode);
+    std::string prompt;
+    if (themeManager) {
+        prompt = themeManager->formatPrompt(cwd, lastExitCode);
+    } else {
+        prompt = cwd + " $ ";
+    }
     
     std::cout << prompt;
 }
@@ -62,19 +104,60 @@ std::string Shell::readInput() {
 void Shell::executeCommand(const std::string& input) {
     if (input.empty()) return;
     
-    // Expand aliases first
-    std::string expandedInput = configManager->getAliasManager()->expandAlias(input);
+    // Broadcast input received event to plugins
+    if (pluginManager) {
+        std::map<std::string, std::string> context;
+        context["input"] = input;
+        pluginManager->broadcastEvent(PluginEvent::INPUT_RECEIVED, context);
+    }
+    
+    // Expand aliases first (if alias manager exists)
+    std::string expandedInput = input;
+    // TODO: Add alias expansion when alias manager is implemented
     
     Command cmd = CommandParser::parseCommand(expandedInput);
     
-    lastExitCode = 0;  // Reset exit code
+    // Broadcast command before event to plugins
+    if (pluginManager) {
+        std::map<std::string, std::string> context;
+        context["command"] = cmd.name;
+        context["args"] = "";
+        for (const auto& arg : cmd.args) {
+            context["args"] += arg + " ";
+        }
+        pluginManager->broadcastEvent(PluginEvent::COMMAND_BEFORE, context);
+    }
     
-    if (CommandExecutor::isBuiltinCommand(cmd.name)) {
-        if (!CommandExecutor::executeBuiltinCommand(cmd, this)) {
+    lastExitCode = 0;  // Reset exit code
+    bool commandExecuted = false;
+    
+    // First check if it's a plugin command
+    if (pluginManager && pluginManager->isPluginCommand(cmd.name)) {
+        commandExecuted = pluginManager->executePluginCommand(cmd);
+        if (!commandExecuted) {
             lastExitCode = 1;
         }
-    } else {
+    }
+    // Then check built-in commands
+    else if (CommandExecutor::isBuiltinCommand(cmd.name)) {
+        commandExecuted = CommandExecutor::executeBuiltinCommand(cmd, this);
+        if (!commandExecuted) {
+            lastExitCode = 1;
+        }
+    }
+    // Finally try external commands
+    else {
         lastExitCode = CommandExecutor::executeExternalCommand(cmd);
+        commandExecuted = (lastExitCode == 0);
+    }
+    
+    // Broadcast command after event to plugins
+    if (pluginManager) {
+        std::map<std::string, std::string> context;
+        context["command"] = cmd.name;
+        context["exit_code"] = std::to_string(lastExitCode);
+        context["success"] = commandExecuted ? "true" : "false";
+        pluginManager->broadcastEvent(PluginEvent::COMMAND_AFTER, context);
     }
 }
 

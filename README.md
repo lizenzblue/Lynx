@@ -1,15 +1,25 @@
 # Lynx Shell
 
-A modern, **highly customizable** shell implementation built from scratch in C++ with production-ready packaging and distribution.
+A modern, **highly customizable** shell implementation built from scratch in C++ with **plugin and theme system** for unlimited extensibility.
 
 ## 🚀 Features
 
 ### Core Functionality
 
 - **Full shell implementation** with built-in and external command execution
-- **Comprehensive customization system** with themes, aliases, and runtime settings
+- **Plugin system** - Add custom commands and functionality without recompiling
+- **External theme system** - Load themes from JSON/INI files at runtime
 - **Modern C++17** codebase with smart pointers and STL containers
 - **Cross-platform** support (Linux and macOS)
+
+### Plugin & Theme System 🎨
+
+- **Dynamic plugin loading** from shared libraries (`.so`, `.dylib`, `.dll`)
+- **Event-driven architecture** - Plugins respond to shell events
+- **Plugin API** - Safe interface for shell interaction
+- **External themes** - JSON/INI theme files with hot-swapping
+- **Example plugins**: Time utilities, enhanced file operations
+- **Example themes**: Cyberpunk, minimal, ocean styles
 
 ### User Experience
 
@@ -34,6 +44,18 @@ A modern, **highly customizable** shell implementation built from scratch in C++
 
 ```bash
 curl -sSL https://raw.githubusercontent.com/lizenzblue/lynx/main/install.sh | bash
+```
+
+### Plugin & Theme Setup
+
+```bash
+# After installing Lynx, set up plugins and themes
+./setup_plugins.sh
+
+# Or install from source
+git clone https://github.com/lizenzblue/lynx.git
+cd lynx
+./setup_plugins.sh
 ```
 
 ### Manual Download
@@ -84,18 +106,90 @@ pwd                              # Show current directory
 | `exit`    | Exit the shell                | `exit`           |
 | `version` | Show version information      | `version`        |
 
+### Plugin Commands
+
+When plugins are loaded, additional commands become available:
+
+| Command   | Description                   | Plugin      |
+|-----------|-------------------------------|-------------|
+| `time`    | Display current time          | time        |
+| `date`    | Display current date          | time        |
+| `uptime`  | Show shell uptime             | time        |
+| `lsa`     | Enhanced file listing         | fileutils   |
+| `tree`    | Directory tree view           | fileutils   |
+| `find`    | Find files by pattern         | fileutils   |
+| `count`   | Count files and directories   | fileutils   |
+
+## 🔌 Plugin & Theme System
+
+### Plugin Development
+
+Create powerful extensions without modifying source code:
+
+```cpp
+#include "plugin.h"
+
+class MyPlugin : public IPlugin {
+public:
+    bool initialize(Shell* shell) override {
+        // Register commands, set up event handlers
+        return true;
+    }
+    
+    void onEvent(PluginEvent event, const std::map<std::string, std::string>& context) override {
+        // Respond to shell events
+    }
+};
+
+LYNX_PLUGIN_ENTRY_POINT(MyPlugin)
+```
+
+**Compile and install:**
+```bash
+./examples/plugins/build_plugin.sh myplugin --install
+```
+
+### Theme Development
+
+Create custom themes with JSON or INI files:
+
+```json
+{
+  "info": {
+    "name": "mytheme",
+    "description": "My custom theme"
+  },
+  "colors": {
+    "prompt_prefix": "#00FF00",
+    "prompt_directory": "#0080FF",
+    "output_success": "#00FF7F"
+  },
+  "settings": {
+    "prompt_format": "➜ {directory} ",
+    "show_exit_code": true
+  }
+}
+```
+
+**Install theme:**
+```bash
+cp mytheme.json ~/.lynx/themes/
+# Set theme=mytheme in config
+```
+
 ## 🎨 File-Based Configuration
 
 Lynx loads configuration automatically from `~/.lynx/` at startup (similar to how zsh loads `.zshrc`):
 
-- `config.ini` - Main configuration file
-- `aliases.ini` - Command aliases
+- `config` - Main configuration file
+- `plugins/` - Plugin shared libraries
 - `themes/` - Custom theme definitions
 
 **No interactive configuration needed** - just edit the files and restart the shell!
 
 ### Available Themes
 
+**Built-in themes:**
 - **default** - Clean and minimal
 - **dark** - Dark theme with bright accents
 - **blue** - Blue-based color scheme
@@ -103,26 +197,27 @@ Lynx loads configuration automatically from `~/.lynx/` at startup (similar to ho
 - **purple** - Elegant purple theme
 - **rainbow** - Colorful multi-hue theme
 
+**Example external themes:**
+- **cyberpunk** - Neon-inspired futuristic theme
+- **minimal** - Ultra-clean minimal design
+- **ocean** - Blue and teal ocean colors
+
 ### Configuration Examples
 
-Edit `~/.lynx/config.ini`:
+Edit `~/.lynx/config`:
 
 ```ini
-[general]
-theme = dark
-prompt_format = %u@%h:%w$
+# Theme and appearance
+theme = cyberpunk
+
+# Plugin settings
+plugins_enabled = true
+plugin_autoload = true
+
+# Shell settings
+welcome_message = Welcome to Lynx Shell with Plugins!
+show_welcome = true
 history_size = 2000
-welcome_message = Welcome to your custom shell!
-```
-
-Edit `~/.lynx/aliases.ini`:
-
-```ini
-[aliases]
-ll = ls -la --color=auto
-gs = git status
-.. = cd ..
-... = cd ../..
 ```
 
 **That's it!** Restart the shell and your settings are active.

@@ -17,6 +17,8 @@ namespace Utils {
     // Environment utilities
     std::string getEnvVar(const std::string& name);
     void setEnvVar(const std::string& name, const std::string& value);
+    std::string getHomeDirectory();
+    std::string expandPath(const std::string& path);
     
     // Terminal utilities
     void clearScreen();

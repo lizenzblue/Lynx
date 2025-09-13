@@ -1,0 +1,36 @@
+{
+  "info": {
+    "name": "ocean",
+    "version": "1.0.0",
+    "author": "Lynx Shell Team",
+    "description": "Ocean-inspired theme with blue and teal colors"
+  },
+  "colors": {
+    "prompt_prefix": "#0080FF",
+    "prompt_directory": "#00CED1",
+    "prompt_suffix": "#20B2AA",
+    "prompt_input": "#F0F8FF",
+    
+    "output_normal": "#F0F8FF",
+    "output_success": "#00FF7F",
+    "output_warning": "#FFD700",
+    "output_error": "#FF6347",
+    "output_info": "#87CEEB",
+    
+    "syntax_keyword": "#4169E1",
+    "syntax_string": "#32CD32",
+    "syntax_number": "#DA70D6",
+    "syntax_comment": "#708090",
+    "syntax_operator": "#FFA500",
+    
+    "highlight_background": "\u001b[48;5;17m",
+    "selection_background": "\u001b[48;5;24m",
+    "cursor_color": "#00CED1"
+  },
+  "settings": {
+    "prompt_format": "{prefix}🌊 {directory} {suffix}➜ ",
+    "show_git_branch": true,
+    "show_exit_code": true,
+    "show_timestamp": false
+  }
+}

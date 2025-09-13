@@ -90,3 +90,32 @@ std::string Utils::getHostname() {
     }
     return "localhost";
 }
+
+std::string Utils::getHomeDirectory() {
+    const char* home = std::getenv("HOME");
+    if (home) {
+        return std::string(home);
+    }
+    
+    // Fallback to getpwuid
+    struct passwd* pw = getpwuid(getuid());
+    if (pw) {
+        return std::string(pw->pw_dir);
+    }
+    
+    return "/tmp";  // Last resort fallback
+}
+
+std::string Utils::expandPath(const std::string& path) {
+    if (path.empty()) {
+        return path;
+    }
+    
+    if (path[0] == '~') {
+        if (path.length() == 1 || path[1] == '/') {
+            return getHomeDirectory() + path.substr(1);
+        }
+    }
+    
+    return path;
+}

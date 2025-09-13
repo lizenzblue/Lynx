@@ -5,8 +5,10 @@
 #include <vector>
 #include <memory>
 
-// Forward declaration
+// Forward declarations
 class ConfigManager;
+class PluginManager;
+class ExternalThemeManager;
 
 class Shell {
 private:
@@ -15,6 +17,8 @@ private:
     std::string currentDirectory;
     int lastExitCode;
     std::unique_ptr<ConfigManager> configManager;
+    std::unique_ptr<PluginManager> pluginManager;
+    std::unique_ptr<ExternalThemeManager> themeManager;
 
 public:
     Shell();
@@ -36,6 +40,12 @@ public:
     
     // History access
     const std::vector<std::string>& getHistory() const { return history; }
+    
+    // Plugin system access
+    PluginManager* getPluginManager() { return pluginManager.get(); }
+    
+    // Theme system access
+    ExternalThemeManager* getThemeManager() { return themeManager.get(); }
 };
 
 #endif // SHELL_H

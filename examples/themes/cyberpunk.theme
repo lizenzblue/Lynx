@@ -1,0 +1,40 @@
+# Cyberpunk Theme for Lynx Shell
+# A futuristic neon-inspired theme
+
+[info]
+name = cyberpunk
+version = 1.0.0
+author = Lynx Shell Team
+description = Cyberpunk neon theme with bright colors and futuristic feel
+
+[colors]
+# Prompt colors - bright neon style
+prompt_prefix = bright_magenta
+prompt_directory = bright_cyan
+prompt_suffix = bright_green
+prompt_input = bright_white
+
+# Output colors - cyberpunk palette
+output_normal = bright_white
+output_success = bright_green
+output_warning = bright_yellow
+output_error = bright_red
+output_info = bright_cyan
+
+# Syntax highlighting
+syntax_keyword = bright_blue
+syntax_string = bright_green
+syntax_number = bright_magenta
+syntax_comment = bright_black
+syntax_operator = bright_yellow
+
+# Special elements
+highlight_background = "\033[48;5;21m"  # Dark blue background
+selection_background = "\033[48;5;53m"  # Purple background
+cursor_color = bright_cyan
+
+[settings]
+prompt_format = "{prefix}┌[{directory}]{suffix}└─➤ "
+show_git_branch = true
+show_exit_code = true
+show_timestamp = false

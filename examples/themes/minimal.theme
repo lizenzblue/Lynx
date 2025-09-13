@@ -1,0 +1,40 @@
+# Minimal Theme for Lynx Shell
+# A clean, minimal theme with subtle colors
+
+[info]
+name = minimal
+version = 1.0.0
+author = Lynx Shell Team
+description = Clean minimal theme with subtle colors and simple prompt
+
+[colors]
+# Prompt colors - subtle and clean
+prompt_prefix = dim
+prompt_directory = blue
+prompt_suffix = green
+prompt_input = white
+
+# Output colors - muted palette
+output_normal = white
+output_success = green
+output_warning = yellow
+output_error = red
+output_info = cyan
+
+# Syntax highlighting - minimal
+syntax_keyword = blue
+syntax_string = green
+syntax_number = magenta
+syntax_comment = bright_black
+syntax_operator = yellow
+
+# Special elements
+highlight_background = "\033[48;5;235m"  # Dark gray background
+selection_background = "\033[48;5;237m"  # Slightly lighter gray
+cursor_color = white
+
+[settings]
+prompt_format = "{directory} {suffix}→ "
+show_git_branch = false
+show_exit_code = false
+show_timestamp = false

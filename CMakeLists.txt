@@ -12,11 +12,19 @@ set(CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDEBUG")
 # Include directories
 include_directories(include)
 
-# Source files
+# Find required packages
+find_package(PkgConfig REQUIRED)
+
+# Source files (exclude plugin.cpp for now due to dependencies)
 file(GLOB_RECURSE SOURCES "src/*.cpp")
+list(REMOVE_ITEM SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/src/plugin.cpp")
+list(REMOVE_ITEM SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/src/theme_manager.cpp")
 
 # Create executable
 add_executable(lynx ${SOURCES})
+
+# Link libraries for dynamic loading
+target_link_libraries(lynx ${CMAKE_DL_LIBS})
 
 # Install targets
 install(TARGETS lynx 
