@@ -110,15 +110,15 @@ pwd                              # Show current directory
 
 When plugins are loaded, additional commands become available:
 
-| Command   | Description                   | Plugin      |
-|-----------|-------------------------------|-------------|
-| `time`    | Display current time          | time        |
-| `date`    | Display current date          | time        |
-| `uptime`  | Show shell uptime             | time        |
-| `lsa`     | Enhanced file listing         | fileutils   |
-| `tree`    | Directory tree view           | fileutils   |
-| `find`    | Find files by pattern         | fileutils   |
-| `count`   | Count files and directories   | fileutils   |
+| Command  | Description                 | Plugin    |
+| -------- | --------------------------- | --------- |
+| `time`   | Display current time        | time      |
+| `date`   | Display current date        | time      |
+| `uptime` | Show shell uptime           | time      |
+| `lsa`    | Enhanced file listing       | fileutils |
+| `tree`   | Directory tree view         | fileutils |
+| `find`   | Find files by pattern       | fileutils |
+| `count`  | Count files and directories | fileutils |
 
 ## 🔌 Plugin & Theme System
 
@@ -135,7 +135,7 @@ public:
         // Register commands, set up event handlers
         return true;
     }
-    
+
     void onEvent(PluginEvent event, const std::map<std::string, std::string>& context) override {
         // Respond to shell events
     }
@@ -145,6 +145,7 @@ LYNX_PLUGIN_ENTRY_POINT(MyPlugin)
 ```
 
 **Compile and install:**
+
 ```bash
 ./examples/plugins/build_plugin.sh myplugin --install
 ```
@@ -172,6 +173,7 @@ Create custom themes with JSON or INI files:
 ```
 
 **Install theme:**
+
 ```bash
 cp mytheme.json ~/.lynx/themes/
 # Set theme=mytheme in config
@@ -190,6 +192,7 @@ Lynx loads configuration automatically from `~/.lynx/` at startup (similar to ho
 ### Available Themes
 
 **Built-in themes:**
+
 - **default** - Clean and minimal
 - **dark** - Dark theme with bright accents
 - **blue** - Blue-based color scheme
@@ -198,6 +201,7 @@ Lynx loads configuration automatically from `~/.lynx/` at startup (similar to ho
 - **rainbow** - Colorful multi-hue theme
 
 **Example external themes:**
+
 - **cyberpunk** - Neon-inspired futuristic theme
 - **minimal** - Ultra-clean minimal design
 - **ocean** - Blue and teal ocean colors

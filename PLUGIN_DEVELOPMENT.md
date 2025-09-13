@@ -38,7 +38,7 @@ public:
     bool initialize(Shell* shell) override;
     void shutdown() override;
     const PluginInfo& getInfo() const override;
-    
+
     // Optional overrides
     void onEvent(PluginEvent event, const std::map<std::string, std::string>& context) override;
     bool handleCommand(const Command& cmd, Shell* shell) override;
@@ -75,7 +75,7 @@ Register commands in the `initialize()` method:
 ```cpp
 bool initialize(Shell* shell) override {
     api = new PluginAPI(shell);
-    
+
     PluginCommand myCmd;
     myCmd.name = "mycommand";
     myCmd.description = "My custom command";
@@ -83,12 +83,12 @@ bool initialize(Shell* shell) override {
     myCmd.handler = [this](const Command& cmd, Shell* shell) -> bool {
         return handleMyCommand(cmd, shell);
     };
-    
+
     auto* pluginManager = shell->getPluginManager();
     if (pluginManager) {
         pluginManager->registerCommand(info.name, myCmd);
     }
-    
+
     return true;
 }
 ```
@@ -192,7 +192,7 @@ output_success = bright_green
 output_error = bright_red
 
 [settings]
-prompt_format = {prefix}[{directory}]{suffix} $ 
+prompt_format = {prefix}[{directory}]{suffix} $
 show_git_branch = true
 show_exit_code = true
 ```
@@ -277,7 +277,7 @@ themes reload
 ### PluginEvent Types
 
 - `SHELL_STARTUP` - Shell has started
-- `SHELL_SHUTDOWN` - Shell is shutting down  
+- `SHELL_SHUTDOWN` - Shell is shutting down
 - `COMMAND_BEFORE` - Before command execution
 - `COMMAND_AFTER` - After command execution
 - `PROMPT_DISPLAY` - Before displaying prompt
@@ -286,24 +286,29 @@ themes reload
 ### PluginAPI Methods
 
 #### Output
+
 - `print(string)` - Print without newline
 - `println(string)` - Print with newline
 - `printError(string)` - Print error message
 
 #### History
+
 - `addToHistory(string)` - Add to command history
 - `getHistory()` - Get command history
 
 #### Configuration
+
 - `getConfigValue(key, default)` - Get config value
 - `setConfigValue(key, value)` - Set config value
 
 #### Environment
+
 - `getCurrentDirectory()` - Get current directory
 - `getLastExitCode()` - Get last command exit code
 - `setLastExitCode(code)` - Set exit code
 
 #### File System
+
 - `expandPath(path)` - Expand ~ and variables
 - `fileExists(path)` - Check if file exists
 - `listDirectory(path)` - List directory contents
@@ -313,13 +318,15 @@ themes reload
 ### Time Plugin
 
 Adds time-related commands:
+
 - `time` - Display current time
-- `date` - Display current date  
+- `date` - Display current date
 - `uptime` - Display shell uptime
 
 ### File Utils Plugin
 
 Enhanced file operations:
+
 - `lsa` - Detailed file listing
 - `tree` - Directory tree view
 - `find` - Find files by pattern
